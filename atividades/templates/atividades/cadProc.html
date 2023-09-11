@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %}Cadastrar Análise{% endblock%}
+
+{% block main %}    
+    <br/>  
+    <div class="row">
+        <div class="col-12">        
+            <h3>Fazer análise crítica de processos</h3>            
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}      
+                {{ form|bootstrap }}    
+                <input type="submit" class="btn btn-info" value="Salvar"/>             
+            </form>
+        </div>
+    </div>       
+{% endblock %}

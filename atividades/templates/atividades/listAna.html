@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load mathfilters %}
+
+{% block title %}Cadastrar Análise{% endblock%}
+
+{% block main %}    
+
+{% if semana.numero %}
+    <div class="row">
+        <div class="col-12">
+            <h3>Análises críticas da semana: {{semana.numero}} de {{semana.inicio|date:"d/m/y"}} a {{semana.fim|date:"d/m/y"}}</h3>
+                       
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Número de Processos</th>
+                      <th scope="col">NC</th>
+                      <th scope="col">Atualizar</th>
+                      <th scope="col">Imprimir</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                {% for analise in analises %}                
+                  <tr>
+                    <th scope="row">{{ analise }}</th>
+                    <td>{{ analise }}</td>
+                    <td>{{ analise.NC }}</td>
+                    <td><a href="{% url 'cadProc-view' analise.id %}">Atualizar</a></td>
+                    <td><a href="{% url 'imprimir' analise.id %}">Print</a></td>
+                  </tr>                  
+                {% endfor %}
+                </tbody>
+              </table>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,28 @@
+#id_OS{
+    width: 20%;
+    margin-bottom: 1%;
+}
+.container{
+    font-size: 16px;
+}
+
+input [type="checkbox"]{
+    size: 50px;
+}
+
+.form-control{
+    width: 20%
+}
+
+.fa-solid, .fas{
+    font-size: 30px
+}
+
+.fa-solid:hover {
+    cursor: pointer;
+}
+
+#tableListSemana {
+    font-size: 16px;
+
+}

@@ -1,0 +1,15 @@
+#id_OS{
+    width: 20%;
+    margin-bottom: 1%;
+}
+.container{
+    font-size: 12px;
+}
+
+input [type="checkbox"]{
+    size: 50px;
+}
+
+.form-control{
+    width: 20%
+}

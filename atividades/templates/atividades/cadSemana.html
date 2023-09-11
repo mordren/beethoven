@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} Cadastro Análise Crítica {% endblock%}
+
+{% block main %}    
+    <br/>
+    {% if not semana.numero  %}
+    <div class="row">
+        <div class="col-12">        
+            <h3>Fazer análise de crítica de processos</h3>
+            <form action="" name="formProcesso" method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}                      
+                <h4>Semana: {{semana.inicio|date:"d/m/y"}} a <td>{{semana.fim|date:"d/m/y"}}/h4><br/>
+                <br/>
+                <label>Número de processos na semana</label><br/>
+                <input name="numProcessos" value="numProcessos" type="number" required class="input input"/>                
+                <br/><br/>
+                <input type="submit" class="btn btn-info" required="required" value="Criar"/>
+            </form>
+        </div>
+    </div>  
+    {% endif %}
+    <br/>
+    
+
+    
+
+{% endblock %}

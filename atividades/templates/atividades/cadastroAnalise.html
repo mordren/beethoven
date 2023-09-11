@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block title %} Novo Cliente {% endblock%}
+
+{% block main %}    
+    <br/>
+    <div class="row">
+        <div class="col-12">        
+            <h3>Fazer análise de processos</h3>
+            <form action="" name="formProcesso" method="post"  enctype="multipart/form-data">
+                {% csrf_token %}         
+                <label>Selecione a semana:</label><br/>
+                <select name="selSemana">
+                    {% for semana in semanas %}
+                        <option value="{{semana.numero}}">Semana: {{semana.numero}} - {{semana.inicio|date:"d/m/y"}} a {{semana.fim|date:"d/m/y"}}</option>
+                    {% endfor %}             
+                </select>
+                <br/><br/>
+                <label>Número de processos na semana</label><br/>
+                <input name="numProcessos" value="numProcessos" type="number" class="input input"/>
+                <br/><br/>
+                <input type="submit" class="btn btn-info" required="required" value="Criar"/>
+            </form>
+        </div>
+    </div>    
+{% endblock %}

@@ -1,8 +1,6 @@
 import datetime
 import io
-from tkinter import Canvas
 from django.shortcuts import render, redirect
-
 from atividades.forms import analiseForm
 from .models import AnaliseProcesso, Semana
 from django.views.generic.edit import CreateView, UpdateView, View
@@ -10,7 +8,6 @@ from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, FileResponse, HttpResponse
 from .util.report import imprimirPDF
 from django.http import FileResponse
-from reportlab.pdfgen import canvas
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin

@@ -16,7 +16,7 @@ bind = '191.101.70.108:8000'
 workers = 3
 
 executar com:
-gunicorn -c conf/django_conf.py Beethoven.wsgi
+gunicorn -c /home/user/conf/django.conf.py Beethoven.wsgi
 
 agora pressione CTRL+Z para deixar rodando em background o gunicorn
 
@@ -35,8 +35,6 @@ server {
  }
 }
 
-
-
 copiar para o enable
 sudo ln -s /etc/nginx/sites-available/beethoven /etc/nginx/sites-enabled
 
@@ -44,12 +42,21 @@ sudo systemctl restart nginx
 
 se não funcionar digita:
 bg 
-
 dai ele provavelmente vai recarregar
 
+Se der erro 403:
+Troca os previlégios do usuário:
+usermod -aG sudo newuser 
+
+no /etc/nginx/nginx.conf substituir o www-data pelo seu usário.
+user www-data;
+
+reinciar o sistema:
+systemctl restart nginx
 
 mudar no settings:
-CSRF_TRUSTED_ORIGINS = [
-    '191.101.70.108'
-]
+CSRF_TRUSTED_ORIGINS = ['http://191.101.70.108']
+
+
+
 

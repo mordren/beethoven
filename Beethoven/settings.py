@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-r*-=l&khufie!-hw+yq!yrnui5f3&24tjz*20xkag4hu#49$hh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1','191.101.70.108']
+CSRF_TRUSTED_ORIGINS = ['191.101.70.108']
 
 
 # Application definition
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'Beethoven.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,7 +72,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 WSGI_APPLICATION = 'Beethoven.wsgi.application'
 
@@ -102,7 +102,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

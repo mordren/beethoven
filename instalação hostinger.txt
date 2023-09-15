@@ -1,0 +1,55 @@
+instalar o gunicorn
+pip install gunicorn
+instalar
+nginx 
+apt-get install nginx 
+
+instalar os requerimentos
+
+criar a pasta conf, dentro da pasta criar o arquivo django_conf.py
+
+Escrever no arquivo:
+
+command='home/user/venv/bin/gunicorn'
+pythonpath = '/home/user/beethoven'
+bind = '191.101.70.108:8000'
+workers = 3
+
+executar com:
+gunicorn -c conf/django_conf.py Beethoven.wsgi
+
+agora pressione CTRL+Z para deixar rodando em background o gunicorn
+
+criar o arquivo em /etc/nginx/sites-avalible/beethoven 
+
+server {
+    listen 80;
+    server_name 191.101.70.108;
+
+    location /static/ {
+        root /home/user/beethoven/static/;
+    }
+
+    location / {
+        proxy_pass http://191.101.70.108:8000;
+ }
+}
+
+
+
+copiar para o enable
+sudo ln -s /etc/nginx/sites-available/beethoven /etc/nginx/sites-enabled
+
+sudo systemctl restart nginx
+
+se não funcionar digita:
+bg 
+
+dai ele provavelmente vai recarregar
+
+
+mudar no settings:
+CSRF_TRUSTED_ORIGINS = [
+    '191.101.70.108'
+]
+

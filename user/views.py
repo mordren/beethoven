@@ -18,7 +18,7 @@ def login_view(request):
         if request.user.is_authenticated:
             return redirect('/atividades')
         else:
-            return render(request, '../templates/registration/login.html')
+            return render(request, template_name='../templates/registration/login.html')
     
 def logout_view(request):
     logout(request)

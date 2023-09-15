@@ -15,4 +15,4 @@ urlpatterns = [
     path('util/report/<int:id>',report, name="imprimir"),
     path('listSemana',listaSemana.as_view(), name="listSemana-view"),
     path('cadProcessos',cadProcessos, name="cadProcessos-view"),       
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]

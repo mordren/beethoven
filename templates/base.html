@@ -19,9 +19,18 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="row">
             <div class="col">
+                {% if user.is_authenticated %}
+                <a class="navbar-brand" href="{% url 'atividades-home-view' %} ">
+                    Home
+                </a>  
                 <a class="navbar-brand" href="{% url 'atividades-home-view' %} ">
                     Atividades
-                </a>        
+                </a>       
+                {% else %}
+                
+                    <h3 class="navbar-brand">Home</h3> 
+                
+                {% endif %}   
             </div>                      
         </div>
         <div>

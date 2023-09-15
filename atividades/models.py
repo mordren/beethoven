@@ -3,6 +3,11 @@ from datetime import date, timedelta
 import datetime
 
 # Create your models here.
+class Empresa(models.Model):
+    nome = models.CharField(max_length=60)
+    def __str__(self):
+        return self.nome
+
 class Semana(models.Model):
     inicio = models.DateField()
     fim = models.DateField()
@@ -11,15 +16,11 @@ class Semana(models.Model):
     analises = models.IntegerField(default=0)
     realizado = models.BooleanField(default=False)
     data = models.DateField(default=date.today)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
             
     def __str__(self):
         return (f"Semana: {self.numero} - "+self.inicio.strftime("%d/%m/%y")+"-"+self.fim.strftime("%d/%m/%y"))
-
-class Empresa(models.Model):
-    nome = models.CharField(max_length=60)
-    def __str__(self):
-        return self.nome
-    
+   
 class AnaliseProcesso(models.Model):
     semana = models.ForeignKey(Semana, on_delete=models.CASCADE)
     OS = models.IntegerField(help_text="Nº da OS", null=True)

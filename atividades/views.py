@@ -1,5 +1,6 @@
 import datetime
 import io
+from user.models import UserProfile
 from django.shortcuts import render, redirect
 from atividades.forms import analiseForm
 from .models import AnaliseProcesso, Semana
@@ -66,6 +67,7 @@ class cadProc(View):
             Semana.objects.filter(id=analise.semana.id).update(realizado=True,data=datetime.date.today())
         return redirect('listAna-view', semana=analise.semana.numero)
 
+@login_required
 def cadProcessos(request):    
     post = request.POST
     id = int(request.POST.get('semana_hidden'))
@@ -100,8 +102,9 @@ class listAna(LoginRequiredMixin ,View):
 class listaSemana(View):
     def get(self, request):
         proc = []
-        data = {}
-        semana = Semana.objects.all()        
+        data = {}     
+        user = UserProfile.objects.filter(user=request.user).first()
+        semana = Semana.objects.filter(empresa=user.empresa)        
         data['semanas'] = semana            
         return render(request, 'atividades/listSemana.html', data)    
     def post(self, request):

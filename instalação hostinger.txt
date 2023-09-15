@@ -4,6 +4,8 @@ instalar
 nginx 
 apt-get install nginx 
 
+As vezes só exclua tudo e baixe de novo o projeto. As vezes funciona.
+
 instalar os requerimentos
 
 git clone https://github.com/mordren/beethoven

@@ -20,6 +20,7 @@ from atividades import url
 from atividades import url as atividades_urls
 from user.views import login_view, logout_view
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static
 from django.conf import settings
 

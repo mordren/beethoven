@@ -6,6 +6,11 @@ apt-get install nginx
 
 instalar os requerimentos
 
+git clone https://github.com/mordren/beethoven
+
+python manage.py migrate
+python manage.py createsuperuser
+
 criar a pasta conf, dentro da pasta criar o arquivo django_conf.py
 
 Escrever no arquivo:

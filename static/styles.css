@@ -25,3 +25,12 @@ input [type="checkbox"]{
 #tableListSemana {
     font-size: 16px;
 }
+
+.form-signin{
+    border: 2px;
+    
+}
+
+.navbar {
+    background-color: #00212f;
+}

@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} Página de Login {% endblock%}
 {% block main %}
-    <div class='form-signin text-center'>
-        <form method="POST" class="form-signin">
-            {% csrf_token %}
-            <br/><br/>
-            <input type="text" placeholder="Usuário" name="username">
-            <br/><br/>
-            <input type="password" placeholder="Senha" name="password">
-            <br/><br/>
-            <input type="submit">       
-        </form>   
-    </div>    
+<link rel="stylesheet" href="{% static 'login_style.css' %}"/>
+    <div class="login-page">
+    <div class="form">
+        <form class="login-form" action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Usuário"/>
+        <input type="password" name="password" placeholder="Senha"/>
+        <button>Entrar</button>     
+        </form>
+    </div>
+    </div>
 {% endblock %}
 {% block footer %}
     {% include 'footer.html' %}

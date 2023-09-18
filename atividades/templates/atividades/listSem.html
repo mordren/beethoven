@@ -29,17 +29,21 @@
                     <td>{{ semana.processos}}</td>
                     <td>{{ semana.analises}}</td>
                     {% if semana.realizado %}
-                        <td><i class="fa-sharp fa-solid fa-check text-sucess"></td>
+                      <td>
+                        <a href="{% url 'listAna-view' semana.id %}">
+                        <i class="fa-sharp fa-solid fa-check text-sucess">                      
+                      </td>
+                       
                     {% else %}
                       {% if semana.processos == 0 %}
                         <td>
                           <i class="fa-solid fa-circle-exclamation text-danger" 
-                                data-toggle="modal" data-target="#myModal" data-id="{{ semana.id }}"></i>                           
+                              data-toggle="modal" data-target="#myModal" data-id="{{ semana.id }}"></i>                           
                         </td>
                       {% else%}
                         <td>
                           <a href="{% url 'listAna-view' semana.id %}">
-                            <i class="fa-solid fa-circle-exclamation text-danger"></i> 
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
                           </a>
                         </td>
                       {% endif %}                                          

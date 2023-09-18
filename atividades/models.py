@@ -16,6 +16,7 @@ class Semana(models.Model):
     analises = models.IntegerField(default=0)
     realizado = models.BooleanField(default=False)
     data = models.DateField(default=date.today)
+    numeroNC = models.IntegerField(default=0)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
             
     def __str__(self):
@@ -40,7 +41,7 @@ class AnaliseProcesso(models.Model):
     filmagem = models.CharField(max_length=2, choices=[('A','A'),('R', 'R'),('NA', 'NA')],default="A", help_text="11)	Filmagem de todas as etapas de inspeção, verificar calibragem de pneus, ensaio de regloscopio, verificação do sistema de sinalização, ensaio de opacidade e ruído, dentre outros, a filmagem deve conter data e horas no formato (DD/MM/AAAA) e (hh:mm:ss).", null=True)
     observacoes = models.TextField(help_text="Observações", null=True)
     realizado = models.BooleanField(default=False)
-    NC = models.CharField(max_length=3, choices=[('Sim', 'S'),("Não","N")], default="N")
+    NC = models.CharField(max_length=3, choices=[('Sim', 'Sim'),("Não","Não")], default="Não")
     
     def __str__(self):
         if self.realizado == True:

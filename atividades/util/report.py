@@ -17,7 +17,7 @@ media_url = settings.MEDIA_ROOT
 def mp(mm):
     return mm/0.352777
 
-def imprimirPDF(link,semana,user): 
+def imprimirPDF(link,semana,user,ncs): 
     
     usuario = UserProfile.objects.filter(user=user).first()
     user = usuario.user.first_name + ' ' + usuario.user.last_name
@@ -85,7 +85,7 @@ def imprimirPDF(link,semana,user):
     canvas.doForm(xobj_name)
     
     canvas.setFontSize(12)
-    if(analise.NC):
+    if(ncs == 0):
     #não
         canvas.drawString(mp(85.5),mp(267.5),"X")
     #sim
@@ -93,7 +93,7 @@ def imprimirPDF(link,semana,user):
         canvas.drawString(mp(67.5),mp(267.5),"X")
     #RNC
     
-    canvas.drawString(mp(160),mp(268),"0")
+    canvas.drawString(mp(160),mp(268),str(ncs))
     #usuario
     canvas.drawString(mp(20),mp(240), user)
 

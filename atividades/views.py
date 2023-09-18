@@ -41,7 +41,7 @@ class cadSem(View):
         else:
             #implementar tela de confirmação de semana vaga.
             #salvar a semana como vazia.
-            Semana.objects.filter(id=id).update(realizado=True)
+            Semana.objects.filter(id=id).update(realizado= True)
             pass     
         # aqui vou ter que inserir o usuario/empresa/e etc.
         #atualizar a semana aqui.
@@ -57,13 +57,14 @@ class updProc(View):
         post = request.POST                
         analise = AnaliseProcesso.objects.get(id=id)
         #verificar se existe reprova e etc;
-        AnaliseProcesso.objects.filter(id=id).update(OS=post.get('OS'), crlv=post.get('crlv'),data=datetime.date.today(), decalque=post.get('decalque'), vistoriaInicial=post.get('vistoriaInicial'), verificaoEscopo=post.get('verificaoEscopo'),linhaInspecao=post.get('linhaInspecao'),opacidade=post.get('opacidade'),ruido=post.get('ruido'),naoConformidade=post.get('naoConformidade'),rasurasProcessos=post.get('rasurasProcessos'),registrosFotograficos=post.get('registrosFotograficos'),filmagem=post.get('filmagem'),realizado=True) 
+        nc = verificarNC(request)
+        AnaliseProcesso.objects.filter(id=id).update(OS=post.get('OS'), crlv=post.get('crlv'),data=datetime.date.today(), decalque=post.get('decalque'), vistoriaInicial=post.get('vistoriaInicial'), verificaoEscopo=post.get('verificaoEscopo'),linhaInspecao=post.get('linhaInspecao'),opacidade=post.get('opacidade'),ruido=post.get('ruido'),naoConformidade=post.get('naoConformidade'),rasurasProcessos=post.get('rasurasProcessos'),registrosFotograficos=post.get('registrosFotograficos'),filmagem=post.get('filmagem'),realizado= True, NC = nc ) 
         analises = AnaliseProcesso.objects.filter(semana=analise.semana)
         #faz análise se existe processos em aberto ainda: tirar daqui        
         for ana in analises:
             realizado = ana.realizado        
         if(realizado):
-            Semana.objects.filter(id=analise.semana.id).update(realizado=True,data=datetime.date.today())
+            Semana.objects.filter(id=analise.semana.id).update(realizado= True,data=datetime.date.today())
         return redirect('listAna-view', semana=analise.semana.id)
 
 @login_required
@@ -83,7 +84,7 @@ def cadProc(request):
             Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises) 
         return redirect('listAna-view', semana.id)     
     else:
-        Semana.objects.filter(id=id).update(realizado=True)
+        Semana.objects.filter(id=id).update(realizado= True)
         return HttpResponse('./listSem')
 
 
@@ -102,7 +103,7 @@ class listSem(View):
         proc = []
         data = {}     
         user = UserProfile.objects.filter(user=request.user).first()
-        semana = Semana.objects.filter(empresa=user.empresa)        
+        semana = Semana.objects.filter(empresa=user.empresa)
         data['semanas'] = semana            
         return render(request, 'atividades/listSem.html', data)    
     def post(self, request):
@@ -110,11 +111,12 @@ class listSem(View):
 
 def report(request,id):
     semana = Semana.objects.get(id=id)    
-    buffer = io.BytesIO()   
-    imprimirPDF(buffer,semana,request.user)
+    buffer = io.BytesIO() 
+    ncs = qntdNC(semana)
+    imprimirPDF(buffer,semana,request.user, ncs)
     buffer.seek(0)
     filename=semana.data
-    return FileResponse(buffer, as_attachment=True, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")  
+    return FileResponse(buffer, as_attachment= False, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")
 
 def home(request):
     return render(request, 'atividades/index.html')
@@ -123,6 +125,72 @@ def my_logout(request):
     logout(request)
     return redirect('atividades-home-view')
 
+def verificarNC(request):
+    nc = 'Não'
+    if(request.POST.get('crlv') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('decalque') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('vistoriaInicial') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('verificaoEscopo') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('linhaInspecao') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('opacidade') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('ruido') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('naoConformidade') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('rasurasProcessos') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('registrosFotograficos') == 'R'):
+        nc = 'Sim'
+
+    if(request.POST.get('filmagem') == 'R'):
+        nc = 'Sim'
+
+    return nc
+
+def qntdNC(semana):
+    nc = 0
+    analises = AnaliseProcesso.objects.filter(semana=semana.id)
+    for analise in analises:
+        if(analise.crlv == 'R'):
+            nc = nc+1
+        if(analise.decalque == 'R'):
+            nc = nc+1
+        if(analise.vistoriaInicial == 'R'):
+            nc = nc+1
+        if(analise.verificaoEscopo == 'R'):
+            nc = nc+1
+        if(analise.linhaInspecao == 'R'):
+            nc = nc+1
+        if(analise.opacidade == 'R'):
+            nc = nc+1            
+        if(analise.ruido == 'R'):
+            nc = nc+1
+        if(analise.naoConformidade == 'R'):
+            nc = nc+1
+        if(analise.rasurasProcessos == 'R'):
+            nc = nc+1
+        if(analise.registrosFotograficos == 'R'):
+            nc = nc+1
+        if(analise.filmagem == 'R'):
+            nc = nc+1
+    
+    return nc 
+   
 """"
 def cadastroAnalise(request):
     if request.method == "POST":

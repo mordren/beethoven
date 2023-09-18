@@ -14,7 +14,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 # Create your views here.
-class cadSemana(View):
+class cadSem(View):
     def get(self, request,id):
         model = Semana.objects.get(id=id)
         form = ""
@@ -30,8 +30,7 @@ class cadSemana(View):
             data['processos'] = post.get('numProcessos')
             data['form'] = analiseForm()
             data['nAnalises'] = round((int(data['processos'])*0.05)+0.5)
-            #inserir usuário da sessão:        
-            data['user'] = 'João'            
+            #inserir usuário da sessão:                             
             analises = []
             for i in range(data['nAnalises']):
                 analise = AnaliseProcesso.objects.create(semana=data['semana'])
@@ -48,11 +47,11 @@ class cadSemana(View):
         #atualizar a semana aqui.
         return render(request, 'atividades/cadSemana.html', data)
     
-class cadProc(View):
+class updProc(View):
     def get(self, request,id):
         analise = AnaliseProcesso.objects.get(id=id)
         form = analiseForm().iniciar(analise)     
-        return render(request, 'atividades/cadProc.html', {'form':form})
+        return render(request, 'atividades/updProc.html', {'form':form})
 
     def post(self, request, id):
         post = request.POST                
@@ -65,10 +64,10 @@ class cadProc(View):
             realizado = ana.realizado        
         if(realizado):
             Semana.objects.filter(id=analise.semana.id).update(realizado=True,data=datetime.date.today())
-        return redirect('listAna-view', semana=analise.semana.numero)
+        return redirect('listAna-view', semana=analise.semana.id)
 
 @login_required
-def cadProcessos(request):    
+def cadProc(request):    
     post = request.POST
     id = int(request.POST.get('semana_hidden'))
     processos = int(request.POST.get('processos'))
@@ -79,13 +78,13 @@ def cadProcessos(request):
         user = request.user            
         analises = []
         for i in range(nAnalises):
-            analise = AnaliseProcesso.objects.create(semana=semana, user=user,)
+            analise = AnaliseProcesso.objects.create(semana=semana, user=user)
             analises.append(analise)
-            Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises)      
-        return HttpResponseRedirect('./listAna/'+str(id))  
+            Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises) 
+        return redirect('listAna-view', semana.id)     
     else:
         Semana.objects.filter(id=id).update(realizado=True)
-        return HttpResponse('./listSemana')
+        return HttpResponse('./listSem')
 
 
 class listAna(LoginRequiredMixin ,View):
@@ -95,26 +94,24 @@ class listAna(LoginRequiredMixin ,View):
         data['semana'] = Semana.objects.get(id=int(semana))
         data['analises'] = AnaliseProcesso.objects.filter(semana=data['semana'].id)
         return render(request, 'atividades/listAna.html', data)     
-
     def post(self, request):
         pass
 
-class listaSemana(View):
+class listSem(View):
     def get(self, request):
         proc = []
         data = {}     
         user = UserProfile.objects.filter(user=request.user).first()
         semana = Semana.objects.filter(empresa=user.empresa)        
         data['semanas'] = semana            
-        return render(request, 'atividades/listSemana.html', data)    
+        return render(request, 'atividades/listSem.html', data)    
     def post(self, request):
         pass
 
 def report(request,id):
     semana = Semana.objects.get(id=id)    
     buffer = io.BytesIO()   
-    print(request.user)
-    imprimirPDF(buffer,semana,str(request.user))
+    imprimirPDF(buffer,semana,request.user)
     buffer.seek(0)
     filename=semana.data
     return FileResponse(buffer, as_attachment=True, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")  

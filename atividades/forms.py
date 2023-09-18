@@ -21,10 +21,11 @@ class analiseForm(Form):
     rasurasProcessos = forms.ChoiceField(label="Rasuras no processo", choices=ap, help_text="9)	Verificar a existência de RASURAS NOS PROCESSOS;")
     registrosFotograficos = forms.ChoiceField(label="Registros Fotográficos", choices=ap, help_text="10)	Registro fotográfico do EIXO (s) DIANTEIRO (s) e EIXO (s) TRASEIRO (s) do veículo e a banda de rodagem dos pneus dianteiros e pneus traseiros. A foto do eixo dianteiro deve ser tirada no sentido do eixo traseiro, a foto do eixo traseiro deve ser tirada no sentido do eixo dianteiro, quando houver um terceiro eixo, o registro fotográfico deve ser tirado no sentido do eixo traseiro; Registro fotográfico do Para todos os veículos com PARA-CHOQUE homologados, um (1) registro fotográfico da plaqueta de homologação do pára-choque; Registro fotográfico do transversal do PINO-REI e de sua MESA LIMPOS ou QUINTA RODA, quando aplicável; Registro fotográfico das LATERAIS DOS VEÍCULOS com as FAIXAS REFLETIVAS, quando aplicáveis; Registro fotográfico ALÍVIO DE PESO no eixo direcional em veículos pesados, quando aplicável; Registro fotográfico da TRASEIRA DO VEÍCULO na linha de inspeção mecanizada, que tenha possibilidade de leitura da PLACA de licença no RELATÓRIO DE INSPEÇÃO.Obs. Os registros fotográficos devem conter data e hora.")
     filmagem = forms.ChoiceField(choices=ap, help_text="11)	Filmagem de todas as etapas de inspeção, verificar calibragem de pneus, ensaio de regloscopio, verificação do sistema de sinalização, ensaio de opacidade e ruído, dentre outros, a filmagem deve conter data e horas no formato (DD/MM/AAAA) e (hh:mm:ss).")
-    observacoes = forms.Textarea()
+    observacoes = forms.CharField(widget=forms.Textarea(attrs={"rows":"5"}))
      
     def __init__(self, *args, **kwargs):
         super(analiseForm, self).__init__(*args, **kwargs)
+        self.fields['observacoes'].required = False
         for field in self.fields:
             help_text = self.fields[field].help_text
             self.fields[field].help_text
@@ -42,6 +43,6 @@ class analiseForm(Form):
         self.fields['rasurasProcessos'].initial = analise.rasurasProcessos
         self.fields['registrosFotograficos'].initial = analise.registrosFotograficos
         #self.fields['observacoes'].initial = analise.registrosFotograficos
-        #self.fields['observacoes'].initial = analise.observacoes
+        self.fields['observacoes'].initial = analise.observacoes
         return self
         

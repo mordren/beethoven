@@ -5,6 +5,7 @@ from pdfrw.toreportlab import makerl
 from reportlab.lib.pagesizes import A4
 from django.conf import settings
 from datetime import datetime
+from user.models import UserProfile
 
 from atividades.models import AnaliseProcesso
 
@@ -16,11 +17,17 @@ media_url = settings.MEDIA_ROOT
 def mp(mm):
     return mm/0.352777
 
-def imprimirPDF(link,semana,user):    
+def imprimirPDF(link,semana,user): 
+    
+    usuario = UserProfile.objects.filter(user=user).first()
+    user = usuario.user.first_name + ' ' + usuario.user.last_name
+    temp = "/templates/template_" + str(usuario.empresa.nome)
+    
+    
     local = media_url
     outfile = "result.pdf"
     
-    template = PdfReader(local+"/templates/template.pdf", decompress=False).getPage(0)
+    template = PdfReader(local+temp+".pdf", decompress=False).getPage(0)
     template_obj = pagexobj(template)
 
     canvas = Canvas(link)
@@ -69,7 +76,7 @@ def imprimirPDF(link,semana,user):
 
         
     canvas.showPage()
-    template = PdfReader(local+"/templates/template.pdf", decompress=False).getPage(1)
+    template = PdfReader(local+temp+".pdf", decompress=False).getPage(1)
     template_obj = pagexobj(template)
 
     canvas.setPageSize(A4)

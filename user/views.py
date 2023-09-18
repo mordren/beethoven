@@ -13,10 +13,10 @@ def login_view(request):
             return HttpResponseRedirect('Erro no login, contactar')
         else:
             login(request, user)
-            return redirect('/atividades')            
+            return redirect('/')            
     else:
         if request.user.is_authenticated:
-            return redirect('/atividades')
+            return redirect('/')
         else:
             return render(request, template_name='../templates/registration/login.html')
     

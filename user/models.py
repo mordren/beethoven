@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 from django.utils.translation import gettext_lazy as _
-from atividades.models import Empresa
+
 
 # Create your models here.
+class Empresa(models.Model):
+    nome = models.CharField(max_length=60)
+    def __str__(self):
+        return self.nome
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User, 
@@ -11,3 +16,4 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE
     )
     empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
+  

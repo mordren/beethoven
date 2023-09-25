@@ -66,4 +66,17 @@ CSRF_TRUSTED_ORIGINS = ['http://191.101.70.108']
 
 
 
+DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'beethoven',
+        'USER': 'user',
+        'PASSWORD': 'fadiga123',
+        'HOST': 'localhost',  # or the hostname where your MySQL server is runn>
+        'PORT': '3306',      # or the port on which your MySQL server is listen>
+    }
+}
+
+o static está errado
+
 

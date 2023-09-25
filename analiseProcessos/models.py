@@ -1,12 +1,9 @@
 from django.db import models
+from user.models import Empresa
 from datetime import date, timedelta
 import datetime
 
 # Create your models here.
-class Empresa(models.Model):
-    nome = models.CharField(max_length=60)
-    def __str__(self):
-        return self.nome
 
 class Semana(models.Model):
     inicio = models.DateField()

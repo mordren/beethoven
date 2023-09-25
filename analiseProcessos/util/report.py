@@ -7,7 +7,7 @@ from django.conf import settings
 from datetime import datetime
 from user.models import UserProfile
 
-from atividades.models import AnaliseProcesso
+from analiseProcessos.models import AnaliseProcesso
 
 
 
@@ -17,8 +17,7 @@ media_url = settings.MEDIA_ROOT
 def mp(mm):
     return mm/0.352777
 
-def imprimirPDF(link,semana,user,ncs): 
-    
+def imprimirPDF(link,semana,user,ncs):  
     usuario = UserProfile.objects.filter(user=user).first()
     user = usuario.user.first_name + ' ' + usuario.user.last_name
     temp = "/templates/template_" + str(usuario.empresa.nome)

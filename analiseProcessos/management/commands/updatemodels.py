@@ -1,7 +1,7 @@
 import datetime
 from django.db import models
 from django.core.management.base import BaseCommand
-from atividades.models import Semana, Empresa
+from analiseProcessos.models import Semana, Empresa
 
 class Command(BaseCommand):
     help = 'import booms'

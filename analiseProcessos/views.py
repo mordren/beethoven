@@ -2,7 +2,7 @@ import datetime
 import io
 from user.models import UserProfile
 from django.shortcuts import render, redirect
-from atividades.forms import analiseForm
+from analiseProcessos.forms import analiseForm
 from .models import AnaliseProcesso, Semana
 from django.views.generic.edit import CreateView, UpdateView, View
 from django.urls import reverse_lazy
@@ -116,7 +116,7 @@ def report(request,id):
     imprimirPDF(buffer,semana,request.user, ncs)
     buffer.seek(0)
     filename=semana.data
-    return FileResponse(buffer, as_attachment= False, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")
+    return FileResponse(buffer, as_attachment=False, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")
 
 def home(request):
     return render(request, 'atividades/index.html')

@@ -28,7 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1','191.101.70.108']
 CSRF_TRUSTED_ORIGINS = ['http://191.101.70.108']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,9 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap5',
     'bootstrapform',
-    'atividades',
+    'analiseProcessos',
+    'user',
     'mathfilters',
-    'user' 
+    'compras',
 ]
 
 MIDDLEWARE = [

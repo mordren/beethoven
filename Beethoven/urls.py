@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from atividades import url 
-from atividades import url as atividades_urls
+from analiseProcessos import url 
+from analiseProcessos import url as atividades_urls
 from user.views import login_view, logout_view
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required

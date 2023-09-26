@@ -34,7 +34,7 @@
         <div>
             {% if user.is_authenticated %}
                 <span class="navbar-text">Bem vindo! {{ user.username }}</span>
-                <button class="btn btn-info"><a href="{% url 'logout' %}">Sair</a></button>
+                <a href="{% url 'logout' %}"><button class="btn btn-info">Sair</button></a>
             {% else %}
                 <span class="navbar-text"Faça o login</span>
                     <button class="btn btn-info"><a href="{% url 'login' %}">Login</a></button>

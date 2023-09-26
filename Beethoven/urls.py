@@ -23,10 +23,12 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.conf.urls.static import static
 from django.conf import settings
+from compras import url as compras_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin"),
     path('', include(atividades_urls)),
     path('login/', login_view, name='login'),
     path('logout', logout_view, name='logout'),
+    path('', include(compras_urls)),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

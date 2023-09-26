@@ -9,8 +9,6 @@ from user.models import UserProfile
 
 from analiseProcessos.models import AnaliseProcesso
 
-
-
 media_url = settings.MEDIA_ROOT
 
 
@@ -20,8 +18,7 @@ def mp(mm):
 def imprimirPDF(link,semana,user,ncs):  
     usuario = UserProfile.objects.filter(user=user).first()
     user = usuario.user.first_name + ' ' + usuario.user.last_name
-    temp = "/templates/template_" + str(usuario.empresa.nome)
-    
+    temp = "/templates/analiseProcessos/template_" + str(usuario.empresa.nome)
     
     local = media_url
     outfile = "result.pdf"
@@ -115,6 +112,6 @@ def getAttr(analise, opcao):
     att.append("filmagem")
     from django.db import connection, transaction
     cursor = connection.cursor()
-    cursor.execute(f"SELECT {att[opcao]} FROM atividades_analiseprocesso WHERE id = {analise.id} ")   
+    cursor.execute(f"SELECT {att[opcao]} FROM analiseProcessos_analiseprocesso WHERE id = {analise.id} ")   
     row = cursor.fetchone()
     return row[0]

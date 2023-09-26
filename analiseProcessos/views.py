@@ -22,8 +22,7 @@ class cadSem(View):
             
     def post(self, request,id):
         data = {}          
-        post = request.POST
-        
+        post = request.POST        
         #faz a busca no banco para verificar os dados da semana
         if int(post.get('numProcessos')) > 0:
             data['semana'] = Semana.objects.get(id=id)
@@ -119,7 +118,7 @@ def report(request,id):
     return FileResponse(buffer, as_attachment=False, filename="Analise: "+str(semana.inicio)+" - "+str(semana.fim)+".pdf")
 
 def home(request):
-    return render(request, 'atividades/index.html')
+    return render(request, 'user/index.html')
 
 def my_logout(request):
     logout(request)

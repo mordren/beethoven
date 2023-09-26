@@ -24,6 +24,7 @@ workers = 3
 
 executar com:
 gunicorn -c /home/user/conf/django.conf.py Beethoven.wsgi
+systemctl restart nginx
 
 agora pressione CTRL+Z para deixar rodando em background o gunicorn
 
@@ -63,8 +64,6 @@ systemctl restart nginx
 
 mudar no settings:
 CSRF_TRUSTED_ORIGINS = ['http://191.101.70.108']
-
-
 
 DATABASES = {
         'default': {

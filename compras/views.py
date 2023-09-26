@@ -45,7 +45,7 @@ class UpdateCompra(View):
     
     def post(self, request, id):
         post = request.POST                
-        analise = Compra.objects.get(id=id)
+        compra = Compra.objects.get(id=id)
         #verificar se existe reprova e etc;
         Compra.objects.filter(id=id).update(descricao=post.get('descricao'),empresaContratada=post.get('empresaContratada'),responsavelAnuencia=post.get('responsavelAnuencia'),integridade=post.get('integridade'),requisitosNorma=post.get('requisitosNorma'),metodologia=post.get('metodologia'),requisitos=post.get('requisitos'), calibracao=post.get('calibracao'), observacoes=post.get('observacoes'), dataRecebimento=post.get('dataRecebimento'))
         return redirect('listCompra-view')

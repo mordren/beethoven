@@ -6,7 +6,7 @@ from django.utils import timezone
 class Compra(models.Model):
     responsavelCompra = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING)
     descricao = models.CharField(max_length=60)    
-    date = models.DateField(auto_created=True)
+    date = models.DateField(timezone.now(), null=True)
     empresaContratada = models.CharField(max_length=50)
     responsavelAnuencia = models.CharField(max_length=50)
     integridade = models.CharField(max_length=20, choices=[('A','A'),('R', 'R'),('NA', 'NA')], default="A", help_text="Se os mesmo estão íntegros, bem lacrados nas suas embalagens e funcionando:", null=True)

@@ -45,13 +45,14 @@ class cadSem(View):
         # aqui vou ter que inserir o usuario/empresa/e etc.
         #atualizar a semana aqui.
         return render(request, 'atividades/cadSemana.html', data)
-    
+
+#usei upd porque o usário não cria essas análises por OS, ele apenas diz quantas ele quer criar.
 class updProc(View):
     def get(self, request,id):
         analise = AnaliseProcesso.objects.get(id=id)
         form = analiseForm().iniciar(analise)     
         return render(request, 'atividades/updProc.html', {'form':form})
-
+    
     def post(self, request, id):
         post = request.POST                
         analise = AnaliseProcesso.objects.get(id=id)
@@ -66,11 +67,14 @@ class updProc(View):
             Semana.objects.filter(id=analise.semana.id).update(realizado= True,data=datetime.date.today())
         return redirect('listAna-view', semana=analise.semana.id)
 
+#Cadastro do processo.
 @login_required
 def cadProc(request):    
     post = request.POST
     id = int(request.POST.get('semana_hidden'))
     processos = int(request.POST.get('processos'))
+    #Se o usuário inserir 0, quer dizer que aquele período não teve inspeções
+    
     if processos > 0:
         semana = Semana.objects.get(id=id)               
         nAnalises = round((int(processos)*0.05)+0.5)
@@ -82,11 +86,12 @@ def cadProc(request):
             analises.append(analise)
             Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises) 
         return redirect('listAna-view', semana.id)     
+    #é salvado a analise zerada e retorna para lista.
     else:
         Semana.objects.filter(id=id).update(realizado= True)
         return HttpResponse('./listSem')
 
-
+#Lista de análises críticas individuas, aqui pega um ID de semana e lista todas.
 class listAna(LoginRequiredMixin ,View):
     def get(self, request, semana):
         #aqui precisa fazer uma seleção do usário/empresa

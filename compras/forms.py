@@ -1,7 +1,6 @@
 import datetime
 from django.forms import ModelForm, Form
 from django import forms
-
 from user.models import UserProfile
 from .models import Compra
 
@@ -14,6 +13,7 @@ class comprasForm(Form):
     #responsavelCompra = forms.CharField(label='Responsável pela Compra:')
     #date = forms.DateField(initial=datetime.date.today().strftime('%d/%m/%y'))
     #pegar os dados, criar um para a lista de fornecedores.
+    
     empresaContratada = forms.CharField(label='Empresa Contratada:')
     responsavelAnuencia = forms.CharField(label='Responsável pela Anuência da Compra')
     integridade = forms.ChoiceField(choices=ap, help_text='Se os mesmo estão íntegros, bem lacrados nas suas embalagens e funcionando:')
@@ -23,12 +23,13 @@ class comprasForm(Form):
     metodologia = forms.ChoiceField(choices=ap, help_text='Verificar atendimento aos requisitos solicitados:')
     calibracao = forms.ChoiceField(choices=ap, help_text='Verificar se o equipamento calibrado foi aprovado')
     observacoes = forms.CharField(widget=forms.Textarea(attrs={"rows":"7"}), label='Observações:')
-    dataRecebimento = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    dataRecebimento = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}), required=False)
     
+    #essas coisas aqui é para mudar o help_text e colocar como descricação abaixo do input.
     def __init__(self, *args, **kwargs):
-        super(comprasForm, self).__init__(*args, **kwargs)       
-        #essas coisas aqui é para mudar o help_text e colocar como descricação abaixo do input.
-        #self.fields['observacoes'].required = False        
+        super(comprasForm, self).__init__(*args, **kwargs)            
+        #self.fields['observacoes'].required = False  
+    
         for field in self.fields:
             help_text = self.fields[field].help_text
             self.fields[field].help_text
@@ -36,6 +37,7 @@ class comprasForm(Form):
                 self.fields[field].widget.attrs.update({'class':'has-popover', 'data-content':help_text, 'data-placement':'right', 'data-container':'body'})
     
     def iniciar(self,compras):
+        #Para o update, traz todos os dados necessários para usuário atualizar.
         self.fields['dataRecebimento'] = forms.DateField(widget=forms.widgets.DateInput(attrs={'type': 'date'}))
         self.fields['descricao'].initial = compras.descricao
         #self.fields['responsavelCompra'].initial = compras.responsavelCompra.user.first_name
@@ -47,12 +49,15 @@ class comprasForm(Form):
         self.fields['requisitosNorma'].initial = compras.requisitosNorma
         self.fields['calibracao'].initial = compras.calibracao
         self.fields['observacoes'].initial = compras.observacoes
-        self.fields['dataRecebimento'].initial = compras.dataRecebimento
+        self.fields['dataRecebimento'].initial = datetime.date.today().strftime('%d/%m/%y')
         return self
     
     def save(self, user):
+        #faço assim para salvar, porque não dá pra fazer de forma automática
+        #como é muita coisa preferi trazer pra cá o save, não sei se é o correto. Mas form é também view.
         compra = Compra()
         user = UserProfile.objects.filter(user=user).first()
+        compra.date = datetime.date.today()
         compra.descricao = self.cleaned_data.get('descricao')    
         compra.responsavelCompra = user
         compra.empresaContratada = self.cleaned_data.get('empresaContratada')
@@ -67,4 +72,5 @@ class comprasForm(Form):
         return compra
     
     def create(self):
+        self.fields['dataRecebimento'].widget = forms.widgets.HiddenInput()
         self.fields['dataRecebimento'].widget = forms.widgets.HiddenInput()

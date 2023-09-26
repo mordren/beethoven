@@ -15,6 +15,7 @@ def mp(mm):
 
 def imprimirPDF(link,compra,user):  
     usuario = UserProfile.objects.filter(user=user).first()
+    responsavelCompra= compra.responsavelCompra.user.first_name + ' ' + compra.responsavelCompra.user.last_name
     
     temp = "/templates/compras/template_" + str(usuario.empresa.nome)
     
@@ -36,7 +37,7 @@ def imprimirPDF(link,compra,user):
     #data execução
     canvas.drawString(mp(177),mp(240), datetime.strftime(compra.date,"%d/%m/%Y"))
     #responsável pela compra
-    canvas.drawString(mp(105),mp(240), compra.responsavelAnuencia)
+    canvas.drawString(mp(105),mp(240), responsavelCompra)
     #descrição 
     canvas.drawString(mp(15),mp(240), compra.descricao)
     #Empresa contratada
@@ -115,8 +116,8 @@ def imprimirPDF(link,compra,user):
     canvas.drawText(textObject)
     
     #responsável 
-    responsavel = compra.responsavelCompra.user.first_name + ' ' + compra.responsavelCompra.user.last_name
-    canvas.drawString(mp(12.5),mp(51), responsavel)
+    
+    canvas.drawString(mp(12.5),mp(51), responsavelCompra)
  
     canvas.showPage()
     canvas.save()

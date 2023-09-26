@@ -16,4 +16,7 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE
     )
     empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
+    
+    def __str__(self):
+        return self.user.first_name + ' ' + self.user.last_name
   

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load mathfilters %}
+
+{% block title %}Análise de processos{% endblock%}
+
+{% block main %}    
+
+{% if semana.numero %}
+      <div class="row">
+          <div class="col-12">
+            <div class="table-title col-12">
+              <div class="row">
+                  <div class="col-6">
+                      <h2>Análises de <b>Processos</b></h2>
+                  </div>
+                  <div class="col-6">
+                      <a href="{% url 'newProc-view' semana.id %}">
+                      <button class="btn btn-new">
+                          <i class="fa fa-plus"></i> Novo
+                      </button>
+                      </a>
+                  </div>
+              </div>
+          </div>          
+            <table class="table text-center table-striped">
+                <thead>
+                    <tr>
+                      <th scope="col">OS</th>                      
+                      <th scope="col">NC</th>
+                      <th scope="col">Atualizar</th>                      
+                      <th scope="col">Excluir</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                {% for analise in analises %}                
+                  <tr>
+                    <th scope="row">{{ analise }}</th>                    
+                    <td>{{ analise.NC }}</td>
+                    <td><a href="{% url 'updProc-view' analise.id %}"><i class="fas fa-sync personal_icons"></i></a></td>                    
+                    <td> <a href="{% url 'delProc-view' analise.id %}"  
+                      onclick="return confirm('Você tem certeza que quer deletar ?')">
+                      <i class="fa-solid fa-trash delete-icon"></i>
+                    </td>              
+                  </tr>                  
+                {% endfor %}
+                </tbody>
+              </table>
+              <a href="{% url 'listSem-view' %}">Retornar para lista de semanas clique aqui!<a/>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

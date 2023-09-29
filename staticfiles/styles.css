@@ -88,23 +88,19 @@ form[name="formCompras"] {
     transform: scale(1.15);
 }
 
-.updateIcon {
+.personal_icons{
     font-size: 20px;
     color: #17a2b8;
 }
 
-.updateIcon:hover{
-    color: #138496;
-}
-
-.print{
-    color: #17a2b8;
-}
-
-.print:hover{
+.personal_icons:hover{
     color: #138496;
 }
 
 #id_observacoes{
     resize: none;
+}
+
+.update_icon{
+    font-size: 15px;    
 }

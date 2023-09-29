@@ -70,7 +70,7 @@ def imprimirPDF(link,semana,user,ncs):
             canvas.drawString(mp(col),mp(linhaDaOS-l), str(attr))            
         i = i+1
 
-        
+    #PÁGINA 2:
     canvas.showPage()
     template = PdfReader(local+temp+".pdf", decompress=False).getPage(1)
     template_obj = pagexobj(template)

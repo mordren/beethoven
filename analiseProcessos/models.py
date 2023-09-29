@@ -17,7 +17,7 @@ class Semana(models.Model):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
             
     def __str__(self):
-        return (f"Semana: {self.numero} - "+self.inicio.strftime("%d/%m/%y")+"-"+self.fim.strftime("%d/%m/%y"))
+        return (f"Semana: {self.numero} - "+self.inicio.strftime("%d/%m/%y")+"-"+self.fim.strftime("%d/%m/%y")+' - '+self.empresa.nome)
    
 class AnaliseProcesso(models.Model):
     semana = models.ForeignKey(Semana, on_delete=models.CASCADE)
@@ -42,7 +42,7 @@ class AnaliseProcesso(models.Model):
     
     def __str__(self):
         if self.realizado == True:
-            return "OS : " + str(self.OS)
+            return str(self.OS)
         else:
             return "Análise a realizar, clique em atualizar"
         

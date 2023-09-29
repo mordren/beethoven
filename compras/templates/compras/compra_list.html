@@ -35,7 +35,7 @@
             <td>{{ compra.date|date:"d/m/y" }}</td>
             <td>{{ compra.descricao }}</td>
             <td>{{ compra.empresaContratada }}</td>
-            <td><a href="{% url 'updateCompra-view' compra.id %}"><i class="fas fa-sync updateIcon"></i></a></td> 
+            <td><a href="{% url 'updateCompra-view' compra.id %}"><i class="fas fa-sync personal_icons"></i></a></td> 
             <td> <a href="{% url 'deleteCompra-view' compra.id %}"  
                     onclick="return confirm('Você tem certeza que quer deletar ?')">
                     <i class="fa-solid fa-trash delete-icon"></i>

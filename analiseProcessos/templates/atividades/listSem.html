@@ -26,14 +26,19 @@
                     <th scope="row">{{ semana.numero }}</th>
                     <td>{{semana.inicio|date:"d/m/y"}}</td>
                     <td>{{semana.fim|date:"d/m/y"}}</td>
-                    <td>{{ semana.processos}}</td>
+                    {% if semana.processos > 0 %}
+                      <td>{{ semana.processos}}  
+                        <i class="fa-solid fa-pen-to-square personal_icons update_icon" data-toggle="modal" data-target="#updModal" data-id="{{ semana.id }}"></i></td>
+                    {% else %}
+                      <td>{{ semana.processos}}</td>
+                    {% endif %}
                     <td>{{ semana.analises}}</td>
+                    <!-- Eu pego o click do usuário através do javascript e mudo um hidden semana com id, para abrir um novo.-->
                     {% if semana.realizado %}
                       <td>
-                        <a href="{% url 'listAna-view' semana.id %}">
-                        <i class="fa-sharp fa-solid fa-check text-sucess">                      
-                      </td>
-                       
+                        <a href="{% url 'listProc-view' semana.id %}">
+                        <i class="fa-sharp fa-solid fa-check personal_icons">                      
+                      </td>                    
                     {% else %}
                       {% if semana.processos == 0 %}
                         <td>
@@ -42,13 +47,13 @@
                         </td>
                       {% else%}
                         <td>
-                          <a href="{% url 'listAna-view' semana.id %}">
+                          <a href="{% url 'listProc-view' semana.id %}">
                             <i class="fa-solid fa-circle-exclamation text-danger"></i>
                           </a>
                         </td>
                       {% endif %}                                          
                     {% endif %}
-                    <td><a href="{% url 'imprimir' semana.id %}"><i class="fa-solid fa-print print"></i></a></td>
+                    <td><a href="{% url 'imprimir' semana.id %}"><i class="fa-solid fa-print personal_icons"></i></a></td>
                   </tr>                  
                 {% endfor %}
                 </tbody>
@@ -67,7 +72,6 @@
               <div class="modal-body">
               <label>Digite aqui:</label>
               <input type="number" min=0 required name="processos" class="form-control">
-              <input type="hidden" id="semana_hidden" name="semana_hidden" value="valor que você quer passar">
               </div>
               <div class="modal-footer">                
                   <button type="submit" class="btn btn-primary">Inserir</button>
@@ -76,5 +80,26 @@
           </div>
       </div>
   </form>
-
+  <form name="form2" id="form2" class="form-horizontal" method="post" action="{% url 'updNumProc-view' %}">
+    {% csrf_token %}
+    <div class="modal fade" id="updModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">                  
+                <h4 class="modal-title">Atualizar Processos Semana:</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+            <div class="modal-body">
+            <h5 class="alert-danger">Isso irá excluir as análises já realizadas!</h5>
+            <label>Digite aqui:</label>
+            <input type="number" min=0 required name="processos" class="form-control">
+            <input type="hidden" id="semana_hidden" name="semana_hidden" value="valor que você quer passar">
+            </div>
+            <div class="modal-footer">                
+                <button type="submit" class="btn btn-primary">Inserir</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</form>
 {% endblock %}

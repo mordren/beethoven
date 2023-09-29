@@ -36,7 +36,7 @@ class cadSem(View):
                 analises.append(analise)
                 Semana.objects.get(id=id).update(processos=post.get('numProcessos'),analises=data['nAnalises'])                
             data['analises'] = analises
-            return HttpResponseRedirect('./listAna/'+id)            
+            return HttpResponseRedirect('./listProc/'+id)            
         else:
             #implementar tela de confirmação de semana vaga.
             #salvar a semana como vazia.
@@ -45,6 +45,25 @@ class cadSem(View):
         # aqui vou ter que inserir o usuario/empresa/e etc.
         #atualizar a semana aqui.
         return render(request, 'atividades/cadSemana.html', data)
+
+#listar todas as análises na semana.
+class listSem(View):
+    def get(self, request):
+        proc = []
+        data = {}     
+        user = UserProfile.objects.filter(user=request.user).first()
+        semana = Semana.objects.filter(empresa=user.empresa)
+        data['semanas'] = semana            
+        return render(request, 'atividades/listSem.html', data)    
+    def post(self, request):
+        pass
+
+@login_required
+def updNumProc(request):
+    AnaliseProcesso.objects.filter(semana=request.POST.get('semana_hidden')).delete()
+    Semana.objects.filter(id=request.POST.get('semana_hidden')).update(analises=0, processos=0,realizado=False)
+    cadProc(request, request.POST.get('semana_hidden'))
+    return redirect('listSem-view')
 
 #usei upd porque o usário não cria essas análises por OS, ele apenas diz quantas ele quer criar.
 class updProc(View):
@@ -65,16 +84,14 @@ class updProc(View):
             realizado = ana.realizado        
         if(realizado):
             Semana.objects.filter(id=analise.semana.id).update(realizado= True,data=datetime.date.today())
-        return redirect('listAna-view', semana=analise.semana.id)
+        return redirect('listProc-view', semana=analise.semana.id)
 
 #Cadastro do processo.
 @login_required
-def cadProc(request):    
-    post = request.POST
+def cadProc(request,id):    
     id = int(request.POST.get('semana_hidden'))
     processos = int(request.POST.get('processos'))
     #Se o usuário inserir 0, quer dizer que aquele período não teve inspeções
-    
     if processos > 0:
         semana = Semana.objects.get(id=id)               
         nAnalises = round((int(processos)*0.05)+0.5)
@@ -85,33 +102,40 @@ def cadProc(request):
             analise = AnaliseProcesso.objects.create(semana=semana, user=user)
             analises.append(analise)
             Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises) 
-        return redirect('listAna-view', semana.id)     
+        return redirect('listProc-view', semana.id)     
     #é salvado a analise zerada e retorna para lista.
     else:
         Semana.objects.filter(id=id).update(realizado= True)
         return HttpResponse('./listSem')
 
 #Lista de análises críticas individuas, aqui pega um ID de semana e lista todas.
-class listAna(LoginRequiredMixin ,View):
+class listProc(LoginRequiredMixin ,View):
     def get(self, request, semana):
         #aqui precisa fazer uma seleção do usário/empresa
         data = {}
         data['semana'] = Semana.objects.get(id=int(semana))
         data['analises'] = AnaliseProcesso.objects.filter(semana=data['semana'].id)
-        return render(request, 'atividades/listAna.html', data)     
+        return render(request, 'atividades/listProc.html', data)     
     def post(self, request):
         pass
 
-class listSem(View):
-    def get(self, request):
-        proc = []
-        data = {}     
-        user = UserProfile.objects.filter(user=request.user).first()
-        semana = Semana.objects.filter(empresa=user.empresa)
-        data['semanas'] = semana            
-        return render(request, 'atividades/listSem.html', data)    
-    def post(self, request):
-        pass
+@login_required
+def delProc(request, id):
+    ana = AnaliseProcesso.objects.filter(id=id).first()
+    semana = Semana.objects.get(id=ana.semana.id)
+    semana.analises = semana.analises-1
+    Semana.objects.filter(id=semana.id).update(realizado=False, analises=semana.analises)     
+    ana.delete()  
+    return redirect('listProc-view', semana.id)
+
+@login_required
+def newProc(request,semana):
+    semana = Semana.objects.get(id=semana)
+    analise = AnaliseProcesso()
+    analise.semana = semana  
+    analise.save()
+    Semana.objects.filter(id=semana.id).update(analises=semana.analises+1)
+    return redirect('listProc-view', semana.id)
 
 def report(request,id):
     semana = Semana.objects.get(id=id)    

@@ -3,7 +3,7 @@ import io
 from user.models import UserProfile
 from django.shortcuts import render, redirect
 from analiseProcessos.forms import analiseForm
-from .models import AnaliseProcesso, Semana
+from .models import AnaliseProcessoSV, Semana
 from django.views.generic.edit import CreateView, UpdateView, View
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect, FileResponse, HttpResponse
@@ -32,7 +32,7 @@ class cadSem(View):
             #inserir usuário da sessão:                             
             analises = []
             for i in range(data['nAnalises']):
-                analise = AnaliseProcesso.objects.create(semana=data['semana'])
+                analise = AnaliseProcessoSV.objects.create(semana=data['semana'])
                 analises.append(analise)
                 Semana.objects.get(id=id).update(processos=post.get('numProcessos'),analises=data['nAnalises'])                
             data['analises'] = analises
@@ -60,7 +60,7 @@ class listSem(View):
 
 @login_required
 def updNumProc(request):
-    AnaliseProcesso.objects.filter(semana=request.POST.get('semana_hidden')).delete()
+    AnaliseProcessoSV.objects.filter(semana=request.POST.get('semana_hidden')).delete()
     Semana.objects.filter(id=request.POST.get('semana_hidden')).update(analises=0, processos=0,realizado=False)
     cadProc(request, request.POST.get('semana_hidden'))
     return redirect('listSem-view')
@@ -68,17 +68,17 @@ def updNumProc(request):
 #usei upd porque o usário não cria essas análises por OS, ele apenas diz quantas ele quer criar.
 class updProc(View):
     def get(self, request,id):
-        analise = AnaliseProcesso.objects.get(id=id)
+        analise = AnaliseProcessoSV.objects.get(id=id)
         form = analiseForm().iniciar(analise)     
         return render(request, 'atividades/updProc.html', {'form':form})
     
     def post(self, request, id):
         post = request.POST                
-        analise = AnaliseProcesso.objects.get(id=id)
+        analise = AnaliseProcessoSV.objects.get(id=id)
         #verificar se existe reprova e etc;
         nc = verificarNC(request)
-        AnaliseProcesso.objects.filter(id=id).update(OS=post.get('OS'), crlv=post.get('crlv'),data=datetime.date.today(), decalque=post.get('decalque'), vistoriaInicial=post.get('vistoriaInicial'), verificaoEscopo=post.get('verificaoEscopo'),linhaInspecao=post.get('linhaInspecao'),opacidade=post.get('opacidade'),ruido=post.get('ruido'),naoConformidade=post.get('naoConformidade'),rasurasProcessos=post.get('rasurasProcessos'),registrosFotograficos=post.get('registrosFotograficos'),filmagem=post.get('filmagem'),realizado= True, NC = nc ) 
-        analises = AnaliseProcesso.objects.filter(semana=analise.semana)
+        AnaliseProcessoSV.objects.filter(id=id).update(OS=post.get('OS'), crlv=post.get('crlv'),data=datetime.date.today(), decalque=post.get('decalque'), vistoriaInicial=post.get('vistoriaInicial'), verificaoEscopo=post.get('verificaoEscopo'),linhaInspecao=post.get('linhaInspecao'),opacidade=post.get('opacidade'),ruido=post.get('ruido'),naoConformidade=post.get('naoConformidade'),rasurasProcessos=post.get('rasurasProcessos'),registrosFotograficos=post.get('registrosFotograficos'),filmagem=post.get('filmagem'), observacoes=post.get('observacoes'), realizado= True, NC = nc ) 
+        analises = AnaliseProcessoSV.objects.filter(semana=analise.semana)
         #faz análise se existe processos em aberto ainda: tirar daqui        
         for ana in analises:
             realizado = ana.realizado        
@@ -88,8 +88,10 @@ class updProc(View):
 
 #Cadastro do processo.
 @login_required
-def cadProc(request,id):    
+def cadProc(request):    
+    print(request.POST.get('semana_hidden'))
     id = int(request.POST.get('semana_hidden'))
+    
     processos = int(request.POST.get('processos'))
     #Se o usuário inserir 0, quer dizer que aquele período não teve inspeções
     if processos > 0:
@@ -99,7 +101,7 @@ def cadProc(request,id):
         user = request.user            
         analises = []
         for i in range(nAnalises):
-            analise = AnaliseProcesso.objects.create(semana=semana, user=user)
+            analise = AnaliseProcessoSV.objects.create(semana=semana, user=user)
             analises.append(analise)
             Semana.objects.filter(id=id).update(processos=processos,analises=nAnalises) 
         return redirect('listProc-view', semana.id)     
@@ -114,27 +116,30 @@ class listProc(LoginRequiredMixin ,View):
         #aqui precisa fazer uma seleção do usário/empresa
         data = {}
         data['semana'] = Semana.objects.get(id=int(semana))
-        data['analises'] = AnaliseProcesso.objects.filter(semana=data['semana'].id)
+        data['analises'] = AnaliseProcessoSV.objects.filter(semana=data['semana'].id)
         return render(request, 'atividades/listProc.html', data)     
     def post(self, request):
         pass
 
 @login_required
 def delProc(request, id):
-    ana = AnaliseProcesso.objects.filter(id=id).first()
-    semana = Semana.objects.get(id=ana.semana.id)
-    semana.analises = semana.analises-1
-    Semana.objects.filter(id=semana.id).update(realizado=False, analises=semana.analises)     
+    realizado = False
+    ana = AnaliseProcessoSV.objects.filter(id=id).first()
+    semana = Semana.objects.get(id=ana.semana.id)  
     ana.delete()  
+    analises = AnaliseProcessoSV.objects.filter(semana=ana.semana)     
+    for ana in analises:
+        realizado = ana.realizado    
+    Semana.objects.filter(id=semana.id).update(realizado=realizado, analises=semana.analises-1)     
     return redirect('listProc-view', semana.id)
 
 @login_required
 def newProc(request,semana):
     semana = Semana.objects.get(id=semana)
-    analise = AnaliseProcesso()
+    analise = AnaliseProcessoSV()
     analise.semana = semana  
     analise.save()
-    Semana.objects.filter(id=semana.id).update(analises=semana.analises+1)
+    Semana.objects.filter(id=semana.id).update(analises=semana.analises+1,realizado=False)
     return redirect('listProc-view', semana.id)
 
 def report(request,id):
@@ -192,7 +197,7 @@ def verificarNC(request):
 
 def qntdNC(semana):
     nc = 0
-    analises = AnaliseProcesso.objects.filter(semana=semana.id)
+    analises = AnaliseProcessoSV.objects.filter(semana=semana.id)
     for analise in analises:
         if(analise.crlv == 'R'):
             nc = nc+1
@@ -218,33 +223,3 @@ def qntdNC(semana):
             nc = nc+1
     
     return nc 
-   
-""""
-def cadastroAnalise(request):
-    if request.method == "POST":
-        form = request.POST
-        processos = form.get('numProcessos')
-        semana = form.get('selSemana')             
-        return render(request, "controleProcessos",{'html':processos})           
-    else:
-        sem = Semana.objects.filter(realizado=False)
-        return render(request, 'atividades/cadastroAnalise.html', {'semanas':sem})
-    
-class controleProcesso(CreateView):
-    model = controleProcesso
-    fields = ['OS','crlv','decalque','vistoriaInicial','linhaInspecao','opacidade','ruido','naoConformidade', 'rasurasProcessos', 'registrosFotograficos', 'filmagem']
-
-class cadOS(UpdateView):
-    model = Semana.objects.filter(realizado=False)
-    fields = ['numero']
-    
-
-class atividadesView(CreateView):
-    model = analiseProcessos
-   fields = ['data','crlv','decalque','vistoriaInicial','linhaInspecao','opacidade','ruido','naoConformidade', 'rasurasProcessos', 'registrosFotograficos', 'filmagem', 'OS']
-    success_url = reverse_lazy('atividades') 
- 
-def atividadesV(request):
-    model = analiseProcessos
-    return render(request, 'atividades/analiseprocessos_form.html',  {'object_list':model})
-"""

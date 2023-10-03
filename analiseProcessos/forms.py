@@ -41,8 +41,7 @@ class analiseForm(Form):
         self.fields['opacidade'].initial = analise.opacidade
         self.fields['ruido'].initial = analise.ruido
         self.fields['rasurasProcessos'].initial = analise.rasurasProcessos
-        self.fields['registrosFotograficos'].initial = analise.registrosFotograficos
-        #self.fields['observacoes'].initial = analise.registrosFotograficos
+        self.fields['registrosFotograficos'].initial = analise.registrosFotograficos        
         self.fields['observacoes'].initial = analise.observacoes
         return self
         

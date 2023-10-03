@@ -19,12 +19,11 @@ class Semana(models.Model):
     def __str__(self):
         return (f"Semana: {self.numero} - "+self.inicio.strftime("%d/%m/%y")+"-"+self.fim.strftime("%d/%m/%y")+' - '+self.empresa.nome)
    
-class AnaliseProcesso(models.Model):
+class AnaliseProcessoSV(models.Model):
     semana = models.ForeignKey(Semana, on_delete=models.CASCADE)
     OS = models.IntegerField(help_text="Nº da OS", null=True)
     data = models.DateField(default=date.today)
     user = models.CharField(max_length=30, default="João")
-    portaria = models.CharField(max_length=4, choices=[("SV","SV"), ('OIVA', 'OIVA'),("PP", 'PP')], default="SV", null=True)
     crlv = models.CharField(max_length=20, choices=[('A','A'),('R', 'R'),('NA', 'NA')], default="A", help_text="1)	CRLV ou CRV ou NF compra veículo – HABILITAÇÃO do condutor", null=True)
     decalque = models.CharField(max_length=2, choices=[('A','A'),('R', 'R'),('NA', 'NA')], default="A", help_text="2)	DECALQUE do número do chassi;", null=True)
     vistoriaInicial = models.CharField(max_length=2, choices=[('A','A'),('R', 'R'),('NA', 'NA')], default="A",  help_text="3)	FOR ADM 31 ORDEM DE SERVIÇO com a VISTORIA INICIAL;", null=True)

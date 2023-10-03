@@ -6,8 +6,9 @@ from reportlab.lib.pagesizes import A4
 from django.conf import settings
 from datetime import datetime
 from user.models import UserProfile
+from textwrap import wrap
 
-from analiseProcessos.models import AnaliseProcesso
+from analiseProcessos.models import AnaliseProcessoSV
 
 media_url = settings.MEDIA_ROOT
 
@@ -18,7 +19,7 @@ def mp(mm):
 def imprimirPDF(link,semana,user,ncs):  
     usuario = UserProfile.objects.filter(user=user).first()
     user = usuario.user.first_name + ' ' + usuario.user.last_name
-    temp = "/templates/analiseProcessos/template_" + str(usuario.empresa.nome)
+    temp = "/templates/AnaliseProcesso/template_" + str(usuario.empresa.nome)
     
     local = media_url
     outfile = "result.pdf"
@@ -55,14 +56,12 @@ def imprimirPDF(link,semana,user,ncs):
     
     
     #ordem de serviço:
-    #corrigir quando tiver mais usuários;
     i = 0
-    analises = AnaliseProcesso.objects.filter(semana=semana)
+    analises = AnaliseProcessoSV.objects.filter(semana=semana)
     
     for analise in analises:        
         l = linha * i
         canvas.drawString(mp(25),mp(linhaDaOS-l), str(analise.OS))
-
         #Item da coluna
         for f in range(11):
             col = (7.1 * f) + colunaItem
@@ -87,12 +86,32 @@ def imprimirPDF(link,semana,user,ncs):
     #sim
     else:    
         canvas.drawString(mp(67.5),mp(267.5),"X")
-    #RNC
     
+    #RNC
     canvas.drawString(mp(160),mp(268),str(ncs))
+    
     #usuario
-    canvas.drawString(mp(20),mp(240), user)
+    canvas.drawString(mp(20),mp(146), user+' - '+datetime.strftime(analise.data,"%d/%m/%Y"))
+    
+    #Escrever as análises
+    canvas.setFontSize(10)
+    i = 0
+    analises = AnaliseProcessoSV.objects.filter(semana=semana)
 
+    linha = 253
+    #imprime as linhas de observação
+    #linha recebe 5.3 mais pra cima.
+    for analise in analises:
+        if (analise.observacoes != None):
+            text = analise.observacoes           
+            wraped_text = "\n".join(wrap(text, 110)) # 80 is line width  
+            linha = linha - 5
+            canvas.drawString(mp(18),mp(linha), 'Observações da OS: '+str(analise.OS))   
+            linha = linha - 5
+            obs_text = canvas.beginText(mp(18),mp(linha))                         
+            obs_text.textLines(wraped_text)
+            canvas.drawText(obs_text)    
+            linha = linha - 5     
     canvas.showPage()
     canvas.save()
     return canvas
@@ -112,6 +131,6 @@ def getAttr(analise, opcao):
     att.append("filmagem")
     from django.db import connection, transaction
     cursor = connection.cursor()
-    cursor.execute(f"SELECT {att[opcao]} FROM analiseProcessos_analiseprocesso WHERE id = {analise.id} ")   
+    #cursor.execute(f"SELECT {att[opcao]} FROM AnaliseProcesso_AnaliseProcessoSV WHERE id = {analise.id} ")   
     row = cursor.fetchone()
     return row[0]

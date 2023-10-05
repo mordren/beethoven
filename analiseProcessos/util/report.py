@@ -8,10 +8,9 @@ from datetime import datetime
 from user.models import UserProfile
 from textwrap import wrap
 
-from analiseProcessos.models import AnaliseProcessoSV
+from analiseProcessos.models import AnaliseProcesso, AnaliseProcessoResposta, AnaliseProcessoSV
 
 media_url = settings.MEDIA_ROOT
-
 
 def mp(mm):
     return mm/0.352777
@@ -19,11 +18,11 @@ def mp(mm):
 def imprimirPDF(link,semana,user,ncs):  
     usuario = UserProfile.objects.filter(user=user).first()
     user = usuario.user.first_name + ' ' + usuario.user.last_name
-    temp = "/templates/AnaliseProcesso/template_" + str(usuario.empresa.nome)
+    portaria = semana.portaria
+    temp = "\\templates\\AnaliseProcessos\\"+portaria+"_template_" + str(usuario.empresa.nome)
     
     local = media_url
-    outfile = "result.pdf"
-    
+
     template = PdfReader(local+temp+".pdf", decompress=False).getPage(0)
     template_obj = pagexobj(template)
 
@@ -54,19 +53,25 @@ def imprimirPDF(link,semana,user,ncs):
 
     canvas.setFontSize(10)
     
-    
     #ordem de serviço:
     i = 0
-    analises = AnaliseProcessoSV.objects.filter(semana=semana)
+    analises = AnaliseProcesso.objects.filter(semana=semana)
     
-    for analise in analises:        
+    if analises.first().semana.portaria == 'PP':
+        colunaItem = 48.5
+    
+    for analise in analises:               
         l = linha * i
         canvas.drawString(mp(25),mp(linhaDaOS-l), str(analise.OS))
         #Item da coluna
-        for f in range(11):
-            col = (7.1 * f) + colunaItem
-            attr = getAttr(analise, f)
-            canvas.drawString(mp(col),mp(linhaDaOS-l), str(attr))            
+        questoes = AnaliseProcessoResposta.objects.filter(analiseProcesso = analise)
+        f = 0
+        for questao in questoes:            
+            col = (7.2 * f) + colunaItem
+            print(col)
+            attr = questao.resposta            
+            canvas.drawString(mp(col),mp(linhaDaOS-l), str(attr))    
+            f = f + 1       
         i = i+1
 
     #PÁGINA 2:
@@ -91,12 +96,12 @@ def imprimirPDF(link,semana,user,ncs):
     canvas.drawString(mp(160),mp(268),str(ncs))
     
     #usuario
-    canvas.drawString(mp(20),mp(146), user+' - '+datetime.strftime(analise.data,"%d/%m/%Y"))
+    canvas.drawString(mp(20),mp(146), user+' - '+datetime.strftime(semana.data,"%d/%m/%Y"))
     
     #Escrever as análises
     canvas.setFontSize(10)
     i = 0
-    analises = AnaliseProcessoSV.objects.filter(semana=semana)
+    analises = AnaliseProcesso.objects.filter(semana=semana)
 
     linha = 253
     #imprime as linhas de observação
@@ -115,22 +120,3 @@ def imprimirPDF(link,semana,user,ncs):
     canvas.showPage()
     canvas.save()
     return canvas
-
-def getAttr(analise, opcao):
-    att = []
-    att.append("crlv")
-    att.append("decalque")
-    att.append("vistoriaInicial")
-    att.append("verificaoEscopo")
-    att.append("linhaInspecao")
-    att.append("opacidade")
-    att.append("ruido")
-    att.append("naoConformidade")
-    att.append("rasurasProcessos")
-    att.append("registrosFotograficos")
-    att.append("filmagem")
-    from django.db import connection, transaction
-    cursor = connection.cursor()
-    #cursor.execute(f"SELECT {att[opcao]} FROM AnaliseProcesso_AnaliseProcessoSV WHERE id = {analise.id} ")   
-    row = cursor.fetchone()
-    return row[0]

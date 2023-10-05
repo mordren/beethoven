@@ -10,14 +10,17 @@ urlpatterns = [
     #path('cad/<int:id>/', controleProcesso.as_view(), name='controleProcessos'),
     path('', login_required(home), name="atividades-home-view"),
     path('cadSem/<int:id>/', login_required(cadSem.as_view()), name="cadSem-view"),    
-    path('listSem/', login_required(listSem.as_view()), name="listSem-view"),
-    path('updNumProc/', updNumProc, name="updNumProc-view"),
+    path('listSem/<str:portaria>', login_required(listSem.as_view()), name="listSem-view"),
+    path('updNumProc/', atualizarNumerosProcessos, name="updNumProc-view"),
      
     path('util/report/<int:id>/', report, name="imprimir"),
     
-    path('cadProc/', cadProc, name="cadProc-view"),       
+    path('cadProc/', criaAnalisesProcessos, name="cadProc-view"),       
     path('listProc/<int:semana>/', login_required(listProc.as_view()), name="listProc-view"),
     path('updProc/<int:id>/', login_required(updProc.as_view()), name="updProc-view"),
     path('delProc/<int:id>/', delProc, name="delProc-view"),
-    path('newProc/<int:semana>/', newProc, name="newProc-view"),
+    path('newProc/<int:semana>/', criarNovoProcessoIndividual, name="newProc-view"),
+    
+    path('analiseProcesso/<int:id>', RealizaAnaliseProcesso.as_view(), name="analiseProcesso-view"),
+    
 ]

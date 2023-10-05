@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% load mathfilters %}
+{% block title %}Gerenciar Análises de Processo{% endblock%}
+
+{% block main %}   
+    <br/>
+    <div class="row">
+        <div class="col-12">        
+            <h3>Formulário Analise Crítica</b></h3>
+            <form action="" name="formCompras" method="POST"  enctype="multipart/form-data">
+                {% csrf_token %}   
+                <div class="form-group">
+                    <label class="control-label  " for="id_OS">Ordem de Serviço: </label>
+                    <div class=" ">
+                        <input type="number" name="OS" class=" form-control" required="" id="id_OS" value='{{ os }}'>
+                    </div>
+                </div>               
+                {% for form in formulario %}
+                <div class="form-group">
+                    <label class="control-label  " for="id_{{ form.quest.titulo}}">{{form.quest.titulo}}</label>
+                    <div class="">
+                        <select name="{{form.quest.titulo}}" class="has-popover form-control" data-content="{{ form.quest.questao }}" data-placement="right" data-container="body" id="id_{{form.titulo}}">
+                        <option value="A" {%if form.resposta == 'A' %}selected{%endif%}>A</option>
+                        <option value="R" {%if form.resposta == 'R' %}selected{%endif%}>R</option>
+                        <option value="NA" {%if form.resposta == 'NA' %}selected{%endif%}>NA</option>
+                        </select>
+                        <p class="">
+                        {{ form.quest.questao }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="form-group">
+                    <label class="control-label  " for="id_observacoes">Observacoes</label>
+                    <div class=" ">
+                        <textarea name="observacoes" cols="40" rows="5" class=" form-control" id="id_observacoes">{{ observacoes }}</textarea>
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-info" required="required" value="Salvar"/>
+            </form>
+        </div>
+    </div>  
+    <br/>
+</div>
+{% endblock %}

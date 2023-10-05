@@ -1,0 +1,47 @@
+1) Doc. Rec. e identificação do veículo e Relatório de Inspeção de Recebimento preenchidos e assinados;OIVA;Recebimento e Identificação;1
+2) Documentação obrigatória do veículo e de procedência dos componentes utilizados;OIVA;Documentos obrigatórios;2
+"3) CIV anterior, quando aplicável";OIVA;CIV Anterior;3
+4) Lista de Verificação preenchida e assinada;OIVA;Check-list Completo;4
+"5) Laudo da Linha de Inspeção, assinado pelo Inspetor e pelo RT";OIVA;Linha de inspeção;5
+"6) Laudo da Análise de Gases, opacidade e ruído assinado pelo Inspetor e pelo RT, quando aplicável";OIVA;Laudo de gases;6
+"7) Falta de documentos obrigatórios, quando aplicável";OIVA;Documentação completa;7
+"8) Relatório de Não Conformidades preenchido e assinado, quando aplicável";OIVA;Relatório RNC correto;8
+9) Preenchimento dos Certificados em desacordo com a norma de referência;OIVA;Verificar norma no certificado;9
+"10) Ordem de serviço, relatório de recebimento e RNC assinados pelo condutor";OIVA;Ordem de serviço;10
+"11) Registros eletrônicos da linha de inspeção, gases e registros fotográficos, back-up eletrônico)";OIVA;Filmagem e fotografia;11
+"12) Verificar rastreabilidade, rodapé, referência de norma e demais itens descritos nos formulários";OIVA;Rastreabilidade;12
+13) Registros fotográficos com data e hora corretas;OIVA;Registro fotográfico com hora;13
+14) Vídeos contendo todas as etapas da inspeção e mostrando todos os ângulos do veículo;OIVA;Verificar todas etapas filmagem;14
+15) Outros;OIVA;Outros;15
+"1) CRLV ou CRV ou NF compra veículo – HABILITAÇÃO do condutor";SV;CRLV;1
+"2) DECALQUE do número do chassi";SV;Decalque;2
+"3) FOR ADM 31 ORDEM DE SERVIÇO com a VISTORIA INICIAL";SV;Vistoria Inicial;3
+"4) Lista de verificação correta ao escopo, rastreável, com anotações corretas, correções conforme procedimento, com quantificáveis rastreado ao equipamento entre outros";SV;Verificação Escopo;4
+"5) Relatório da LINHA DE INSPEÇÃO, assinado por todos, aprovado, com número de patrimônio, rastreavel ao veículo, equipamento calibrado entre outros";SV;Linha inspeção;5
+"6) Relatório de OPACIDADE, ANÁLISE DE GASES quando aplicável, assinado por todos, aprovado, com número de patrimônio, rastreavel ao veículo, equipamento calibrado entre outros";SV;Opacidade;6
+"7) Relatório de RUÍDO, quando aplicável, assinado por todos, aprovado, com número de patrimônio, rastreavel ao veículo, equipamento calibrado entre outros";SV;Ruído;7
+"8) Registro de NÃO CONFORMIDADE";SV;Não Cofnromidade;8
+"9) Verificar a existência de RASURAS NOS PROCESSOS";SV;Rasuras no Processo;9
+"10) Registro fotográfico do EIXO (s) DIANTEIRO (s) e EIXO (s) TRASEIRO (s) do veículo e a banda de rodagem dos pneus dianteiros e pneus traseiros. A foto do eixo dianteiro deve ser tirada no sentido do eixo traseiro, a foto do eixo traseiro deve ser tirada no sentido do eixo dianteiro, quando houver um terceiro eixo, o registro fotográfico deve ser tirado no sentido do eixo traseiro; Registro fotográfico do Para todos os veículos com PARA-CHOQUE homologados, um (1) registro fotográfico da plaqueta de homologação do pára-choque; Registro fotográfico do transversal do PINO-REI e de sua MESA LIMPOS ou QUINTA RODA, quando aplicável; Registro fotográfico das LATERAIS DOS VEÍCULOS com as FAIXAS REFLETIVAS, quando aplicáveis; Registro fotográfico ALÍVIO DE PESO no eixo direcional em veículos pesados, quando aplicável; Registro fotográfico da TRASEIRA DO VEÍCULO na linha de inspeção mecanizada, que tenha possibilidade de leitura da PLACA de licença no RELATÓRIO DE INSPEÇÃO.Obs. Os registros fotográficos devem conter data e hora.";SV;Registros Fotográficos;10;
+"11) Filmagem de todas as etapas de inspeção, verificar calibragem de pneus, ensaio de regloscopio, verificação do sistema de sinalização, ensaio de opacidade e ruído, dentre outros, a filmagem deve conter data e horas no formato (DD/MM/AAAA) e (hh:mm:ss).";SV;Filmagem;11
+"1) FOR ADM 31 ORDEM DE SERVIÇO;";PP;Ordem de serviço;1
+"2) CRLV ou CRV ou NF compra veículo – Habilitação do condutor;";PP;CRLV;2
+"3) Certificado de descontaminação;";PP;Descontaminação;3
+"4) Cópia do CIV valido;";PP;Cópia do CIV Válido;4
+"5) Cópia do CIPP anterior;";PP;Cópia do CIPP anterior;5
+"6) FOR ADM 30 INSPEÇÃO DE RECEBIMENTO;";PP;Recebimentos;6
+"7) FOR TEC 03 Lista de verificação PP;";PP;Lista verificação PP;7
+8) Registro de Não conformidade -  RNC, deve ser verificado se os itens estão referenciados conforme RTQ 7i;PP;Não conformidade;8
+"9) Decalque do número do equipamento;";PP;Decalque;9
+"10) Um (1) registro fotográfico do veículo/equipamento posicionado no LI com visualização da traseira do equipamento, com uma das laterais do mesmo, evidenciando claramente a placa de licença e, para tanques de carga, a tampa da boca de visita aberta, quando esta for visível; ";PP;Registro fotográfico, traseira, laterais, placa e boca de visita;10
+"11) Registros fotográficos durante a realização do ensaio de pressão/resistência estrutural (hidrostático/pneumático) de cada compartimento do equipamento, quando este teste for aplicável, evidenciando cada compartimento do equipamento inspecionado e os manômetros utilizados indicando, de forma legível, a pressão máxima atingida durante o teste. Nos registros deve ser evidenciada a instalação do manômetro em cada compartimento";PP;Registro ensáio de pressão;11
+"12) Um (1) registro fotográfico ao final da inspeção evidenciando todo o suporte porta-placas e, de forma legível, os seguintes itens: placa de identificação, placa de inspeção e lacre visualizando o seu número (este último quando aplicável). Para Carroçarias abertas de madeira, tipo baú (metálica) e furgão as placas fixadas diretamente ao corpo da carroçaria por rebite ou então placa de inspeção autocolante e destrutiva; ";PP;Registro porta placas, identificação, lacre;12
+"13) Um (1) registro fotográfico ao final da inspeção evidenciando o equipamento inspecionado e, de forma legível, sua chapa de identificação soldada junto ao tanque contendo o número do equipamento, quando aplicável; ";PP;Registro fotográfico chapa da identificação;13
+"14) Registros fotográficos, frente e verso do CIPP, de forma legível, totalmente preenchidos, na sua folha original (1ª e 2ª via juntas, não destacadas); ";PP;Fotográfico CIPP;14
+"15) Registro fotográfico da placa do fabricante; ";PP;Registro fotográfico placa fabricante;15
+16) O registro fotográfico da placa do fabricante é obrigatório nas inspeções de Equipamentos do tipo Silo (Tanque-Silo) e equipamentos sob pressão/vácuo segundo a Portaria Inmetro 299/14. Para os RTQ 1i, 3i, 6i, 7i, 36 e PRFVi, quando não existir placas do fabricante, o registro do item “16” acima pode ser desconsiderado, caso sejam apresentados e arquivados junto ao relatório de inspeção cópia dos seguintes documentos: Data-Book ou folha de especificação do equipamento e outros documentos adicionais requeridos nos RTQ específicos que garantam a rastreabilidade e informações referente às especificações dos equipamentos. ;PP;Placas de fabricante;16
+17) Obs. Os registros fotográficos devem conter data e hora.;PP;Registros fotográficos de data e hora;17
+18) Filmagem de todas as etapas de inspeção, verificar ensaio de estanqueidade, ensaio de pressão, ensaio de testes de válvulas, inspeção externa, placa traseira, filmagem deve conter data e horas no formato (DD/MM/AAAA) e (hh:mm:ss).;PP;Filmagem de todas etapas;18
+19) Verificar patrimônio de equipamento na lista de verificação.;PP;Patrimônio de equipamento lista de verificação;19
+20) Verificar declaração do embarcador.;PP;Verificador declaração do embarcador;20
+21) Verificar itens em relação a Regulamentação técnica.;PP;Verificação regulamentação técnica;21

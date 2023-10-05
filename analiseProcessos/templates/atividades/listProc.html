@@ -37,7 +37,7 @@
                   <tr>
                     <th scope="row">{{ analise }}</th>                    
                     <td>{{ analise.NC }}</td>
-                    <td><a href="{% url 'updProc-view' analise.id %}"><i class="fas fa-sync personal_icons"></i></a></td>                    
+                    <td><a href="{% url 'analiseProcesso-view' analise.id %}"><i class="fas fa-sync personal_icons"></i></a></td>                    
                     <td> <a href="{% url 'delProc-view' analise.id %}"  
                       onclick="return confirm('Você tem certeza que quer deletar ?')">
                       <i class="fa-solid fa-trash delete-icon"></i>
@@ -46,7 +46,7 @@
                 {% endfor %}
                 </tbody>
               </table>
-              <a href="{% url 'listSem-view' %}">Retornar para lista de semanas clique aqui!<a/>
+              <a href="{% url 'listSem-view' semana.portaria %}">Retornar para lista de semanas clique aqui!<a/>
         </div>
     </div>
     {% endif %}

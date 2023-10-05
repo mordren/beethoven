@@ -14,6 +14,7 @@ class Semana(models.Model):
     realizado = models.BooleanField(default=False)
     data = models.DateField(default=date.today)
     numeroNC = models.IntegerField(default=0)
+    portaria = models.CharField(max_length=4, choices=[("SV","SV"), ('OIVA', 'OIVA'),("PP", 'PP')], default="SV", null=True)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
             
     def __str__(self):
@@ -45,4 +46,32 @@ class AnaliseProcessoSV(models.Model):
         else:
             return "Análise a realizar, clique em atualizar"
         
+class Questao(models.Model):
+    questao = models.CharField(max_length=200)
+    portaria = models.CharField(max_length=4, choices=[("SV","SV"), ('OIVA', 'OIVA'),("PP", 'PP')], default="SV", null=True)
+    titulo = models.CharField(max_length=200, null=True)
+    numero = models.IntegerField(default=0)
+    
+    def __str__(self):
+        return str(self.portaria) + ' - '+self.questao
+    
+class AnaliseProcesso(models.Model):
+    semana = models.ForeignKey(Semana, on_delete=models.CASCADE)
+    OS = models.IntegerField(help_text="Nº da OS", null=True)
+    data = models.DateField(default=date.today)
+    user = models.CharField(max_length=30, default="João")
+    observacoes = models.TextField(help_text="Observações", null=True)
+    realizado = models.BooleanField(default=False)
+    NC = models.CharField(max_length=3, choices=[('Sim', 'Sim'),("Não","Não")], default="Não")
+        
+    def __str__(self):
+        if self.realizado == True:
+            return str(self.OS)
+        else:
+            return "Análise a realizar, clique em atualizar"
+    
+class AnaliseProcessoResposta(models.Model):
+    resposta = models.CharField(max_length=200, choices=[('A','A'),('R', 'R'),('NA', 'NA')], default='A')
+    analiseProcesso = models.ForeignKey(AnaliseProcesso, on_delete=models.CASCADE,  null=True)
+    quest = models.ForeignKey(Questao, on_delete=models.CASCADE, null=True, related_name='questoes')
     
